@@ -10,20 +10,21 @@ and anti-bot behavior at any time — **expect this to break without notice**.
 ## Install
 
 ```bash
-npm install -g @steipete/bird
+npm install -g github:hobson-redbricklabs/bird
 # or
-pnpm add -g @steipete/bird
+pnpm add -g github:hobson-redbricklabs/bird
 # or
-bun add -g @steipete/bird
+bun add -g github:hobson-redbricklabs/bird
 
 # one-shot (no install)
-bunx @steipete/bird whoami
+bunx github:hobson-redbricklabs/bird whoami
 ```
 
 Homebrew (macOS, prebuilt Bun binary):
 
 ```bash
-brew install steipete/tap/bird
+# Clone and install from this repo
+git clone https://github.com/hobson-redbricklabs/bird.git && cd bird && npm install -g .
 ```
 
 ## Quickstart
@@ -46,13 +47,13 @@ bird replies 1234567890123456789 --max-pages 3 --json
 bird thread 1234567890123456789 --max-pages 3 --json
 
 # Search + mentions
-bird search "from:steipete" -n 5
+bird search "from:example" -n 5
 bird mentions -n 5
-bird mentions --user @steipete -n 5
+bird mentions --user @example -n 5
 
 # User tweets (profile timeline)
-bird user-tweets @steipete -n 20
-bird user-tweets @steipete -n 50 --json
+bird user-tweets @example -n 20
+bird user-tweets @example -n 50 --json
 
 # Bookmarks
 bird bookmarks -n 5
@@ -128,13 +129,13 @@ By default, the command fetches from For You, News, Sports, and Entertainment ta
 `bird` can be used as a library (same GraphQL client as the CLI):
 
 ```ts
-import { TwitterClient, resolveCredentials } from '@steipete/bird';
+import { TwitterClient, resolveCredentials } from './dist/lib/index.js';
 
 const { cookies } = await resolveCredentials({ cookieSource: 'safari' });
 const client = new TwitterClient({ cookies });
 
 // Search for tweets
-const searchResult = await client.search('from:steipete', 50);
+const searchResult = await client.search('from:example', 50);
 
 // Fetch news and trending topics from all tabs (default: For You, News, Sports, Entertainment)
 const newsResult = await client.getNews(10, { aiOnly: true });
@@ -150,7 +151,7 @@ const sportsNews = await client.getNews(10, {
 Account details (About profile):
 
 ```ts
-const aboutResult = await client.getUserAboutAccount('steipete');
+const aboutResult = await client.getUserAboutAccount('example');
 if (aboutResult.success && aboutResult.aboutProfile) {
   console.log(aboutResult.aboutProfile.accountBasedIn);
 }
@@ -229,7 +230,7 @@ Write operations:
 
 1. CLI flags: `--auth-token`, `--ct0`
 2. Environment variables: `AUTH_TOKEN`, `CT0` (fallback: `TWITTER_AUTH_TOKEN`, `TWITTER_CT0`)
-3. Browser cookies via `@steipete/sweet-cookie` (override via `--cookie-source` order)
+3. Browser cookies via `sweet-cookie` (override via `--cookie-source` order)
 
 Browser cookie sources:
 - Safari: `~/Library/Cookies/Cookies.binarycookies` (fallback: `~/Library/Containers/com.apple.Safari/Data/Library/Cookies/Cookies.binarycookies`)
